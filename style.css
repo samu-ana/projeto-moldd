@@ -18,7 +18,6 @@
     transition: all .3s ease;
 }
 
-/* CORREÇÃO CRUCIAL: Impede que o seletor universal (*) aplique cor de texto interna ao SVG */
 svg, svg * {
     color: transparent !important;
 }
@@ -33,9 +32,10 @@ h1, h2, h3 {
 
 button {
     border: none;
-    padding: 20px;
+    padding: 16px 24px; /* Ajustado padding para mobile */
     border-radius: 10rem;
     font-weight: 600;
+    width: 100%; /* Ocupa tudo no mobile por segurança */
 }
 
 .carousel-container {
@@ -60,17 +60,19 @@ button {
     border-radius: 16px;
     margin: 5vh auto;
     flex-shrink: 0;
-    padding: 40px;
+    padding: 20px; /* Reduzido no mobile */
     position: relative;
-
     will-change: transform, opacity;
     transform: translate3d(0, 0, 0);
-
     transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     opacity: 0.2;
-
     background-color: var(--bc2);
     box-shadow: var(--shadow);
+    
+    /* Previne quebra de layouts flex no mobile */
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; 
 }
 
 .carousel-item.active {
@@ -89,44 +91,43 @@ button {
 .btn-01:hover {
     background-color: transparent;
     border: var(--yellow-border);
-    padding: 16px;
+    padding: 12px;
 }
 
-/* Seção de Introdução (Item 0) */
+/* Seção de Introdução (Item 0) - Mobile Base */
 .item-0 h3 {
-    font-size: 2rem;
+    font-size: 1.2rem;
 }
 .item-0 p {
-    position: absolute;
-    bottom: 20%;
-    left: 40px;
-    font-size: 4rem;
-    width: 50%;
-    padding-left: 40px;
+    position: static; /* Remove absoluto no mobile */
+    font-size: 2rem;
+    width: 70%;
+    padding-left: 0;
+    margin-top: auto;
+    margin-bottom: 20%;
     font-weight: 600;
 }
 
-/* Seção de Produtos (Item 1) */
-.item-1 button {
-    position: absolute;
-    right: 20%;
-    bottom: 10%;
-    width: 30%;
-}
+/* Seção de Produtos (Item 1) - Mobile Base */
 .item-1 {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column; /* Empilhado no mobile */
+    gap: 20px;
 }
 .item-1 div {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
 }
 .item-1 p {
-    width: 50%;
+    width: 80%;
     text-align: justify;
-    text-indent: 20px;
+}
+.item-1 button {
+    position: static; /* Remove absoluto no mobile */
+    width: 100%;
+    margin-top: 15px;
 }
 
 .item-2, .item-0 {
@@ -141,13 +142,13 @@ ol {
 .etapas-wrapper {
     position: relative;
     width: 100%;
-    margin: 100px;
-    padding-left: 30px;
+    margin: 20px 0;
+    padding-left: 10px;
 }
 
 .steps-list {
     position: relative;
-    z-index: 2; /* Garante que o texto fique por cima da linha gráfica */
+    z-index: 2;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -155,15 +156,15 @@ ol {
 
 .step-item {
     display: flex;
-    align-items: center; /* Centraliza verticalmente a bolinha em relação à primeira linha do bloco de texto */
+    align-items: center;
     position: relative;
-    gap: 24px;
-    margin-bottom: 5rem;
+    gap: 16px;
+    margin-bottom: 2.5rem;
     cursor: default;
 }
 
 .step-item:hover span {
-    transform: scale(1.5);
+    transform: scale(1.2);
 }
 
 .step-item:hover div {
@@ -174,18 +175,18 @@ ol {
     display: flex;
     flex-direction: column;
     text-align: left;
-    padding: 10px 0;
+    padding: 5px 0;
 }
 
 .step-item strong {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 600;
     margin-bottom: 4px;
     color: var(--textColor);
 }
 
 .step-item p {
-    font-size: 10.5pt;
+    font-size: 10pt;
     text-align: left;
     color: var(--textColor);
     opacity: 0.8;
@@ -195,8 +196,8 @@ ol {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 40px;
-    height: 40px;
+    min-width: 35px;
+    height: 35px;
     background-color: var(--secundary);
     color: white !important;
     border-radius: 50%;
@@ -205,31 +206,22 @@ ol {
     z-index: 3;
 }
 
-.step-item:nth-of-type(2) {
-    padding-left: 15%;
-}
+/* Remove os recuos (escadinha) no mobile para não quebrar a tela */
+.step-item:nth-of-type(2),
 .step-item:nth-of-type(3) {
-    padding-left: 30%;
+    padding-left: 0;
 }
 
-/* Dimensionamento estrutural do plano do SVG */
+/* Linha SVG oculta no mobile (curvas complexas quebram em telas estreitas) */
 .curved-line-svg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100% !important;
-    height: 100% !important;
-    z-index: 1; /* Alinha o vetor atrás da lista de textos */
-    pointer-events: none;
-    overflow: visible !important; /* Permite que o desenho faça a curva para fora das bordas */
+    display: none;
 }
 
-/* Estilização e efeito do traço da curva */
 #curve-path {
     fill: none !important;
-    stroke: var(--secundary) !important; /* Combina com o fundo do span indicador */
+    stroke: var(--secundary) !important;
     stroke-width: 4px !important;
-    stroke-linecap: round; /* Arredonda as pontas inicial e final da linha */
+    stroke-linecap: round;
 }
 
 ::selection {
@@ -237,15 +229,108 @@ ol {
 }
 
 img {
-    width: 25%;
+    width: 50%; /* Maior no mobile */
     aspect-ratio: 1 / 1.5;
     display: block;
+    margin: 0 auto;
 }
 
 .logo {
     position: absolute;
-    right: 10%;
-    top: 10%;
-    width: 10%;
+    right: 5%;
+    top: 5%;
+    width: 15%;
     aspect-ratio: 1 / 1;
+}
+
+/* 1. Define a largura da barra vertical */
+.carousel-item::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* 2. O fundo da pista da barra (Track) */
+.carousel-item::-webkit-scrollbar-track {
+    background: var(--bc); 
+}
+
+/* 3. O indicador que se move (Thumb) */
+.carousel-item::-webkit-scrollbar-thumb {
+    background-color: var(--secundary);
+    border-radius: 10px;
+}
+
+/* 4. Efeito de hover ao passar o mouse no indicador */
+.carousel-item::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(from var(--secundary) r g b / 0.8);
+}
+
+
+/* ==========================================================================
+   MEDIA QUERIES ATUALIZADAS (Sintaxe de Range - Nível 4)
+   ========================================================================== */
+
+/* 1. Telas Médias (Tablets - a partir de 768px) */
+@media (width >= 768px) {
+    * {
+        font-size: 11pt;
+    }
+    .carousel-item {
+        padding: 40px;
+    }
+    .item-1 {
+        flex-direction: row;
+    }
+    .item-1 p {
+        width: 50%;
+    }
+    img {
+        width: 25%;
+    }
+    .logo {
+        width: 10%;
+    }
+    .etapas-wrapper {
+        margin: 50px;
+    }
+    /* Ativa o efeito escadinha e exibe a linha SVG */
+    .step-item:nth-of-type(2) { padding-left: 15%; }
+    .step-item:nth-of-type(3) { padding-left: 30%; }
+    .curved-line-svg { display: block; }
+}
+
+/* 2. Telas Grandes (Laptops/Desktops comuns - a partir de 992px) */
+@media (width >= 992px) {
+    * {
+        font-size: 12pt;
+    }
+    .item-0 h3 {
+        font-size: 2rem;
+    }
+    .item-0 p {
+        position: absolute;
+        bottom: 20%;
+        left: 40px;
+        font-size: 3rem;
+        width: 50;
+        padding-left: 40px;
+    }
+    .item-1 button {
+        position: absolute;
+        right: 20%;
+        bottom: 10%;
+        width: 30%;
+    }
+    .etapas-wrapper {
+        margin: 100px;
+    }
+}
+
+/* 3. Telas Grandes/Imensas (Monitores Desktop - a partir de 1200px) */
+@media (width >= 1200px) {
+    * {
+        font-size: 14pt;
+    }
+    .item-0 p {
+        font-size: 4rem;
+    }
 }
