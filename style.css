@@ -1,0 +1,251 @@
+:root {
+    --bc: #f2f1f5; 
+    --bc2: #ffffff;
+    --bc3: linear-gradient(270deg, var(--bc2), #ffeea2);
+    --textColor: #1b1a1c;
+    --shadow: 0 0 20px -10px #00000048;
+    --primary: #f3cb3c; 
+    --secundary: #ffa07b;
+    --yellow-border: 4px solid var(--primary);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    color: var(--textColor);
+    font: 100 12pt 'Inter', sans-serif;
+    transition: all .3s ease;
+}
+
+/* CORREÇÃO CRUCIAL: Impede que o seletor universal (*) aplique cor de texto interna ao SVG */
+svg, svg * {
+    color: transparent !important;
+}
+
+body, html {
+    overflow-x: hidden;
+}
+
+h1, h2, h3 {
+    font-weight: 600;
+}
+
+button {
+    border: none;
+    padding: 20px;
+    border-radius: 10rem;
+    font-weight: 600;
+}
+
+.carousel-container {
+    width: 100vw;
+    height: 100vh;
+    overflow-y: scroll;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    -webkit-overflow-scrolling: touch;
+    background-color: var(--bc);
+}
+
+.carousel-container::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel-item {
+    width: 90vw;
+    height: 90vh;
+    border-radius: 16px;
+    margin: 5vh auto;
+    flex-shrink: 0;
+    padding: 40px;
+    position: relative;
+
+    will-change: transform, opacity;
+    transform: translate3d(0, 0, 0);
+
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0.2;
+
+    background-color: var(--bc2);
+    box-shadow: var(--shadow);
+}
+
+.carousel-item.active {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+.carousel-item:not(.active) {
+    transform: scale(0.92) translateY(30px);
+}
+
+.btn-01 {
+    background-color: var(--primary);
+}
+
+.btn-01:hover {
+    background-color: transparent;
+    border: var(--yellow-border);
+    padding: 16px;
+}
+
+/* Seção de Introdução (Item 0) */
+.item-0 h3 {
+    font-size: 2rem;
+}
+.item-0 p {
+    position: absolute;
+    bottom: 20%;
+    left: 40px;
+    font-size: 4rem;
+    width: 50%;
+    padding-left: 40px;
+    font-weight: 600;
+}
+
+/* Seção de Produtos (Item 1) */
+.item-1 button {
+    position: absolute;
+    right: 20%;
+    bottom: 10%;
+    width: 30%;
+}
+.item-1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.item-1 div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.item-1 p {
+    width: 50%;
+    text-align: justify;
+    text-indent: 20px;
+}
+
+.item-2, .item-0 {
+    background-image: var(--bc3);
+}
+
+/* Seção de Etapas (Item 3) */
+ol {
+    list-style: none;
+}
+
+.etapas-wrapper {
+    position: relative;
+    width: 100%;
+    margin: 100px;
+    padding-left: 30px;
+}
+
+.steps-list {
+    position: relative;
+    z-index: 2; /* Garante que o texto fique por cima da linha gráfica */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.step-item {
+    display: flex;
+    align-items: center; /* Centraliza verticalmente a bolinha em relação à primeira linha do bloco de texto */
+    position: relative;
+    gap: 24px;
+    margin-bottom: 5rem;
+    cursor: default;
+}
+
+.step-item:hover span {
+    transform: scale(1.5);
+}
+
+.step-item:hover div {
+    border-bottom: 1px solid var(--secundary);
+}
+
+.step-item div {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding: 10px 0;
+}
+
+.step-item strong {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--textColor);
+}
+
+.step-item p {
+    font-size: 10.5pt;
+    text-align: left;
+    color: var(--textColor);
+    opacity: 0.8;
+}
+
+.step-item span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    background-color: var(--secundary);
+    color: white !important;
+    border-radius: 50%;
+    font-weight: bold;
+    position: relative;
+    z-index: 3;
+}
+
+.step-item:nth-of-type(2) {
+    padding-left: 15%;
+}
+.step-item:nth-of-type(3) {
+    padding-left: 30%;
+}
+
+/* Dimensionamento estrutural do plano do SVG */
+.curved-line-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 1; /* Alinha o vetor atrás da lista de textos */
+    pointer-events: none;
+    overflow: visible !important; /* Permite que o desenho faça a curva para fora das bordas */
+}
+
+/* Estilização e efeito do traço da curva */
+#curve-path {
+    fill: none !important;
+    stroke: var(--secundary) !important; /* Combina com o fundo do span indicador */
+    stroke-width: 4px !important;
+    stroke-linecap: round; /* Arredonda as pontas inicial e final da linha */
+}
+
+::selection {
+    background-color: rgb(from var(--secundary) r g b / 0.5);
+}
+
+img {
+    width: 25%;
+    aspect-ratio: 1 / 1.5;
+    display: block;
+}
+
+.logo {
+    position: absolute;
+    right: 10%;
+    top: 10%;
+    width: 10%;
+    aspect-ratio: 1 / 1;
+}
